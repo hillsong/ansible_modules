@@ -11,7 +11,7 @@
   collections:
     - netbox.netbox
   vars:
-    netbox_url: "http://localhost:32768"
+    netbox_url: "{{ lookup('env','NETBOX_API') }}"
 
   tasks:
     - name: "1 - Device with required information"

@@ -24,6 +24,8 @@ matrix:
         - cd netbox-docker
         - docker-compose pull
         - docker-compose up -d
+        - export NETBOX_API=http://$(docker-compose port nginx 8080)
+        - echo NETBOX_API is $NETBOX_API
         - cd ..
         - pip install -U pip
         - pip install pytest==4.6.5 pytest-mock pytest-xdist jinja2 PyYAML black==19.10b0
@@ -39,6 +41,8 @@ matrix:
         - cd netbox-docker
         - docker-compose pull
         - docker-compose up -d
+        - export NETBOX_API=http://$(docker-compose port nginx 8080)
+        - echo NETBOX_API is $NETBOX_API
         - cd ..
         - pip install -U pip
         - pip install pytest==4.6.5 pytest-mock pytest-xdist jinja2 PyYAML black==19.10b0
@@ -58,7 +62,7 @@ before_script:
 script:
   - ansible-test units --python $PYTHON_VER -v
   - black . --check
-  - timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:32768)" != "200" ]]; do echo "waiting for Netbox"; sleep 5; done' || false
+  - timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $NETBOX_API)" != "200" ]]; do echo "Waiting for Netbox $NETBOX_API"; sleep 5; done' || false
   - python tests/integration/netbox-deploy.py
   - ansible-playbook tests/integration/regression-tests.yml -vvvv
   - ansible-playbook tests/integration/integration-tests.yml -vvvv

@@ -1,7 +1,8 @@
 import pynetbox
+import os
 
 # Set nb variable to connec to Netbox and use the veriable in future calls
-nb = pynetbox.api("http://localhost:32768", "0123456789abcdef0123456789abcdef01234567")
+nb = pynetbox.api(os.environ['NETBOX_API'], "0123456789abcdef0123456789abcdef01234567")
 
 
 # ORDER OF OPERATIONS FOR THE MOST PART

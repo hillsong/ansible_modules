@@ -1,4 +1,4 @@
 plugin: netbox.netbox.nb_inventory
-api_endpoint: "http://localhost:32768"
+api_endpoint: "{{ lookup('env','NETBOX_API') }}"
 token: "0123456789abcdef0123456789abcdef01234567"
 validate_certs: false

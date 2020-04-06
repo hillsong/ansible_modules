@@ -485,6 +485,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 "config_context": self.extract_config_context,
                 "manufacturers": self.extract_manufacturer,
                 "interfaces": self.extract_interfaces,
+                "custom_fields": self.extract_custom_fields,
             }
         else:
             return {
@@ -502,6 +503,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 "config_context": self.extract_config_context,
                 "manufacturer": self.extract_manufacturer,
                 "interfaces": self.extract_interfaces,
+                "custom_fields": self.extract_custom_fields,
             }
 
     def _pluralize(self, something):
@@ -658,9 +660,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                         for ipaddress in device_ipaddresses
                         if ipaddress["interface"]["id"] == interface["id"]
                     ]
-                    interface["ip-addresses"] = interface_ip
+                    interface["ip_addresses"] = interface_ip
 
                 return interface_lookup
+        except Exception:
+            return
+
+    def extract_custom_fields(self, host):
+        try:
+            return host["custom_fields"]
         except Exception:
             return
 

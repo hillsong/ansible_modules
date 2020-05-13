@@ -1113,17 +1113,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         else:
             return "_".join([grouping, group])
 
-    def add_host_to_groups(self, host, hostname):
+    def _add_dependent_group_by_options(self):
+        dependent_options = {
+            "region": "site",
+            "rack_groups": self._pluralize_group_by("rack"),
+            "rack_role": self._pluralize_group_by("rack"),
+        }
 
         # If we're grouping by regions, hosts are not added to region groups
         # - the site groups are added as sub-groups of regions
         # So, we need to make sure we're also grouping by sites if regions are enabled
 
-        if "region" in self.group_by:
-            # Make sure "site" or "sites" grouping also exists, depending on plurals options
-            site_group_by = self._pluralize_group_by("site")
-            if site_group_by not in self.group_by:
-                self.group_by.append(site_group_by)
+        groupings_to_add = []
+
+        for grouping in self.group_by:
+            dependency = dependent_options.get(grouping)
+            if dependency and dependency not in self.group_by:
+                groupings_to_add.append(dependency)
+
+        self.group_by.extend(groupings_to_add)
+
+    def add_host_to_groups(self, host, hostname):
 
         for grouping in self.group_by:
 
@@ -1337,5 +1347,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.query_filters = self.get_option("query_filters")
         self.device_query_filters = self.get_option("device_query_filters")
         self.vm_query_filters = self.get_option("vm_query_filters")
+
+        # Add any group by options that are implied (ie. "region" depends on "site")
+        self._add_dependent_group_by_options()
 
         self.main()

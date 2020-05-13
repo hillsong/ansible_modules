@@ -17,8 +17,10 @@
                 "manufacturers": [
                     "cisco"
                 ],
+                "rack_groups": [],
+                "rack_role": "test-rack-role",
                 "racks": [
-                    "Test Rack"
+                    "Test Rack Site 2"
                 ],
                 "regions": [],
                 "services": [],
@@ -272,6 +274,13 @@
                 "is_virtual": false,
                 "manufacturers": [
                     "cisco"
+                ],
+                "rack_groups": [
+                    "test-rack-group",
+                    "parent-rack-group"
+                ],
+                "racks": [
+                    "Test Rack"
                 ],
                 "regions": [
                     "test-region",
@@ -790,7 +799,11 @@
             "device_types_nexus_parent",
             "is_virtual",
             "manufacturers_cisco",
+            "rack_groups_parent_rack_group",
+            "rack_groups_test_rack_group",
+            "rack_role_test_rack_role",
             "racks_Test_Rack",
+            "racks_Test_Rack_Site_2",
             "region_other_region",
             "region_parent_region",
             "sites_test_site2",
@@ -867,7 +880,27 @@
             "test100"
         ]
     },
+    "rack_groups_parent_rack_group": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "rack_groups_test_rack_group": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "rack_role_test_rack_role": {
+        "hosts": [
+            "R1-Device"
+        ]
+    },
     "racks_Test_Rack": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "racks_Test_Rack_Site_2": {
         "hosts": [
             "R1-Device"
         ]
